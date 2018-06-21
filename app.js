@@ -16,9 +16,10 @@ var app = express();
 app.use(helmet());
 
 let devcsp = [
+    'font-src *.gstatic.com',
     'img-src \'self\' data:',
     'script-src \'self\' \'unsafe-eval\'',
-    'style-src \'self\' \'unsafe-inline\'',
+    'style-src \'self\' \'unsafe-inline\' *.googleapis.com',
     'default-src \'self\''
 ];
 let prodcsp = [
@@ -58,9 +59,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/app-one/*', appOne);
+app.use('/core-app', appOne);
 
-app.use(express.static(path.join(__dirname, 'dist/app-one')));
+app.use(express.static(path.join(__dirname, 'dist/core-app')));
 
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/phoenix';
 mongoose.connect(mongoUri)
