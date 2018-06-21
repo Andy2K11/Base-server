@@ -1,0 +1,36 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "nodemon": "nodemon ./bin/www",
+    "startdb": "mongod --config mongod.conf",
+    "mongo": "mongo --port 27017",
+    "build": "cd ../app-one && ng build",
+    "buildw": "cd ../app-one && ng build -w",
+    "dev": "start npm run buildw && start npm run startdb && start npm run nodemon",
+    "test": "cd ../app-one && ng test -w"
+  },
+  "dependencies": {
+    "bcrypt": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "hbs": "~4.0.1",
+    "helmet": "^3.12.1",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.1.5",
+    "mongoose-unique-validator": "^2.0.1",
+    "morgan": "~1.9.0",
+    "node-sass-middleware": "0.9.8",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
