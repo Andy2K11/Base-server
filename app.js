@@ -30,7 +30,7 @@ let prodcsp = [
 ];
 app.use((req, res, next) => {
     csp = req.app.get('env') === 'development' ? devcsp.join(';') : prodcsp.join(';');
-    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:3000');         // allow from the dev server
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');         // allow from the dev server
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, X-XSRF-TOKEN');
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
