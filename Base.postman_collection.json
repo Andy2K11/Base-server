@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "9f4b48ce-b47e-4342-a893-e8f016054849",
+		"name": "Base",
+		"description": "Collection to test the base server used by core-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic",
+			"description": "",
+			"item": [
+				{
+					"name": "Express homepage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba9b0832-43b2-42c7-bd19-364bae852a64",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Welcome to Express\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{host}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"description": "",
+			"item": [
+				{
+					"name": "Register new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ab452c33-289e-4a35-90c2-ade3bb656619",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Return ok message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"ok\");",
+									"});",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "45ff60f2-b3e8-4c9b-a538-af2de630fda9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"{{username}}\",\n\t\"email\": \"{{email}}\",\n\t\"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/users/register",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login existing user | no user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cf7081e4-4f6e-4691-bfdd-1d870e17064e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Return error message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.error).to.eql(\"Invalid username or password\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Cookies not set\", function () {",
+									"    pm.response.to.not.have.header(\"Set-Cookie\");",
+									"});",
+									"",
+									"pm.test(\"JWT is not present\", function () {",
+									"    pm.expect(pm.cookies.has(\"jwt\")).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"XSRF is not present\", function () {",
+									"    pm.expect(pm.cookies.has(\"xsrf-token\")).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Response time is more than 2s\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.above(2000);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"invalid@example.com\",\n\t\"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/users/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login existing user | incorrect password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b5f3ff3b-8568-43a8-bf1a-6cd6df08095b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Return error message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.error).to.eql(\"Invalid username or password\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Cookies not set\", function () {",
+									"    pm.response.to.not.have.header(\"Set-Cookie\");",
+									"});",
+									"",
+									"pm.test(\"JWT is not present\", function () {",
+									"    pm.expect(pm.cookies.has(\"jwt\")).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"XSRF is not present\", function () {",
+									"    pm.expect(pm.cookies.has(\"xsrf-token\")).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Response time is more than 2s\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.above(2000);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"{{email}}\",\n\t\"password\": \"wrong\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/users/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dc585b9e-96a3-47ad-8117-7d72d2f4a012",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Return ok message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"ok\");",
+									"});",
+									"",
+									"pm.test(\"Return username\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.username).to.eql(\"Frank\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Set-Cookie is present\", function () {",
+									"    pm.response.to.have.header(\"Set-Cookie\");",
+									"});",
+									"",
+									"pm.test(\"JWT is present\", function () {",
+									"    pm.expect(pm.cookies.has(\"jwt\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"XSRF is present\", function () {",
+									"    pm.expect(pm.cookies.has(\"xsrf-token\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"user-data is present\", function () {",
+									"    pm.cookies.has(\"user-data\");",
+									"});",
+									"",
+									"// pm.test(\"No unsafe CSPs\", function () {",
+									"//     pm.expect(pm.response.headers.get(\"Content-Security-Policy\")).to.not.include(\"unsafe\");",
+									"// });",
+									"",
+									"pm.test(\"Response time is more than 2s\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.above(2000);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"{{email}}\",\n\t\"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/users/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
